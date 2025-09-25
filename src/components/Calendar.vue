@@ -2,8 +2,8 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import DayModal from './DayModal.vue'
 
-const selectedYear = ref(2025)
-const selectedMonth = ref(6)
+const selectedYear = ref()
+const selectedMonth = ref()
 const showModal = ref(false)
 const activeDate = ref(null)
 const todos = ref({})
@@ -28,11 +28,11 @@ watch([selectedYear, selectedMonth], ([year, month]) => {
 const yearOptions = Array.from({ length: 11 }, (_, i) => 2020 + i)
 const monthOptions = Array.from({ length: 12 }, (_, i) => i)
 
-const startDay = computed(() => new Date(selectedYear.value, selectedMonth.value, 1).getDay())
-const daysInMonth = computed(() => new Date(selectedYear.value, selectedMonth.value + 1, 0).getDate())
+const startDay = computed(() => new Date(selectedYear.value, selectedMonth.value).getDay())
+const daysInMonth = computed(() => new Date(selectedYear.value, selectedMonth.value, 0).getDate())
 
 const calendarCells = computed(() => {
-  const cells = Array(startDay.value).fill(null)
+  const cells = Array(startDay).fill(null)
 
   for (let i = 1; i <= daysInMonth.value; i++) {
     const dateObj = new Date(selectedYear.value, selectedMonth.value, i)
@@ -133,37 +133,31 @@ function hasTodos(date) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 40vw;
+  width: 90%;
+  max-width: 1200px;
   margin: 0 auto;
   font-family: "Poppins", sans-serif;
 }
 
 .controls {
   width: 100%;
-  background: #bbb;
+  background: #555;
   display: flex;
   justify-content: space-between;
-  position: relative;
-  padding: 1rem 0;
+  align-items: center;
+  padding: 8px 12px;
+  box-sizing: border-box;
 }
 
-.year-select {
-  flex: 0 0 auto;
-  text-align: left;
-  font-size: 36px;
-  background: transparent;
-  border: none;
-  appearance: none;
-}
-
+.year-select,
 .month-select {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 36px;
+  flex: 0 0 auto;
+  font-size: 1.5rem;
   background: transparent;
   border: none;
   appearance: none;
+  margin: 5px;
+  color: #fff;
 }
 
 select:focus {
@@ -171,9 +165,10 @@ select:focus {
 }
 
 .calendar-grid {
-  width: 40vw;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
 }
 
 .calendar-cell {
@@ -182,34 +177,69 @@ select:focus {
   flex-direction: column;
   justify-content: flex-start;
   border: 1px solid #ccc;
-  height: 80px;
-  padding: 10px;
+  min-height: 70px;
+  padding: 6px;
   cursor: pointer;
+  font-size: 0.9rem;
+  word-break: break-word;
 }
 
 .calendar-cell.today {
-    background: pink;
-    color: #fff;
-    font-weight: bold;
+  background: pink;
+  color: #fff;
+  font-weight: bold;
 }
 
-.bottom-line{
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: red;
-    border-radius: 2px;
+.bottom-line {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: red;
+  border-radius: 2px;
 }
 
 @media (max-width: 940px) {
   .calendar-section {
-    width: 80vw;
+    width: 95%;
   }
+
+  .year-select,
+  .month-select {
+    font-size: 1.2rem;
+  }
+
+  .calendar-cell {
+    min-height: 60px;
+    font-size: 0.8rem;
+    padding: 4px;
+  }
+}
+
+@media (max-width: 600px) {
+  .controls {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .year-select,
+  .month-select {
+    font-size: 1rem;
+    margin: 0;
+  }
+
   .calendar-grid {
-    width: 80vw;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+  }
+
+  .calendar-cell {
+    min-height: 50px;
+    font-size: 0.75rem;
+    padding: 2px;
   }
 }
 </style>
