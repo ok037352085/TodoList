@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
 import DayModal from './DayModal.vue'
-import Header from './Header.vue'
 
 const selectedYear = ref()
 const selectedMonth = ref()
@@ -92,7 +91,6 @@ function hasTodos(date) {
 </script>
 
 <template>
-  <Header />
   <section class="calendar-section">
     <div class="controls">
       <select v-model="selectedYear" class="year-select">
