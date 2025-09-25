@@ -1,5 +1,5 @@
 <script setup>
-    import { computed, ref, onMounted, watch, nextTick } from 'vue'
+    import { computed, ref, watch, nextTick } from 'vue'
 
 const props = defineProps({
     visible: Boolean,
